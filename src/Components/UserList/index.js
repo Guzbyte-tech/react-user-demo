@@ -1,8 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
+import Card from '../UI/Card';
+import './userList.css';
 
-const UserList = () => {
+
+const UserList = (props) => {
+
+  console.log(props);
   return (
-    <div>UserList</div>
+    <Card className="user-list">
+      {
+        props.items.map( user => (
+          <p key={user.id}>{user.username+ " "+user.age+" (years old)"}</p>
+        ))}
+    </Card>
   )
 }
 
