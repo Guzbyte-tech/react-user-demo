@@ -1,23 +1,28 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import "./UserDetails.css";
 import Button from "../UI/Button";
 import ErrorModal from "../UI/ErrorModal";
 
 const UserForm = (props) => {
+
+  const usernameRef = useRef();
+  const ageRef = useRef();
   const [username, setUserName] = useState("");
   const [age, setAge] = useState("");
   const [error, setError] =useState();
 
-  const usernameChangeHandler = (event) => {
-    setUserName(event.target.value);
-  };
-  const ageChangeHandler = (event) => {
-    setAge(event.target.value);
-  };
+  // const usernameChangeHandler = (event) => {
+  //   setUserName(event.target.value);
+  // };
+  // const ageChangeHandler = (event) => {
+  //   setAge(event.target.value);
+  // };
 
   const submitUserDetails = (event) => {
     event.preventDefault();
-    if (username.trim().length === 0 || age.trim().length === 0) {
+    const refUSername = usernameRef.current.value;
+    const refAge = ageRef.current.value;
+    if (refUSername.trim().length === 0 || refAge.trim().length === 0) {
       setError({
         title: "Invalid Input",
         message: "Enter a valid name and age (non-empty value)."
@@ -25,7 +30,7 @@ const UserForm = (props) => {
       return;
     }
 
-    if (+age < 1) {
+    if (+refAge < 1) {
         setError({
             title: "Invalid Age",
             message: "Please enter a valid age (> 0)."
@@ -33,16 +38,17 @@ const UserForm = (props) => {
       return;
     }
     const userDetails = {
-      username: username,
-      age: age,
+      username: refUSername,
+      age: refAge,
       id: Math.random().toString(),
     };
 
-    console.log(userDetails);
 
     props.onSubmitUserForm(userDetails);
-    setUserName("");
-    setAge("");
+    // setUserName("");
+    // setAge("");
+    ageRef.current.value="";
+    usernameRef.current.value="";
   };
 
   const errorHandler = () => {
@@ -60,8 +66,9 @@ const UserForm = (props) => {
           <input
             type="text"
             className="form-control"
-            onChange={usernameChangeHandler}
-            value={username}
+            // onChange={usernameChangeHandler}
+            // value={username}
+            ref={usernameRef}
           />
         </div>
 
@@ -71,8 +78,9 @@ const UserForm = (props) => {
             type="number"
             step="any"
             className="form-control"
-            onChange={ageChangeHandler}
-            value={age}
+            // onChange={ageChangeHandler}
+            // value={age}
+            ref={ageRef}
           />
         </div>
 
